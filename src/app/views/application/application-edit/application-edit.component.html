@@ -1,0 +1,20 @@
+<form>
+  <div class="modal-header">
+    <h4 class="modal-title">应用信息</h4>
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group row">
+      <label class="col-md-2 col-form-label">编号</label>
+      <div class="col-md-10">
+        <input type="text" id="modal-id" name="modal-id" class="form-control" >
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">取消</button>
+    <button type="button" class="btn btn-primary" (click)="save()">保存</button>
+  </div>
+</form>
