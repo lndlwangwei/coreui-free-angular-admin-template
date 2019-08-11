@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-alert',
-  // templateUrl: './alert.component.html',
-  template: '<div *ngFor="let alert of alerts" style="width:400px;position: absolute;margin: auto;left:40%">\n' +
-  '            <alert [type]="alert.type" [dismissOnTimeout]="5000">{{ alert.msg }}</alert>\n' +
-  '          </div>'
+  templateUrl: './alert.component.html',
+  styleUrls: ['./alert.component.scss']
+  // template: '<div *ngFor="let alert of alerts">\n' +
+  // '            <alert [type]="alert.type" [dismissOnTimeout]="5000">{{ alert.msg }}</alert>\n' +
+  // '          </div>'
 })
 export class AlertComponent implements OnInit {
 
