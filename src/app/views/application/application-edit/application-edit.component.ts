@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
+import {ApplicationService} from '../../../common/service/application.service';
 
 @Component({
   selector: 'app-application-edit',
@@ -7,9 +8,19 @@ import {BsModalRef} from 'ngx-bootstrap';
 })
 export class ApplicationEditComponent implements OnInit {
 
-  constructor(public modalRef: BsModalRef) { }
+  public application: any;
+
+  constructor(public modalRef: BsModalRef,
+              public applicationService: ApplicationService) { }
 
   ngOnInit() {
   }
 
+  public add(application) {
+    this.applicationService.add(application)
+  }
+
+  public update(application) {
+
+  }
 }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {ApplicationService} from '../../common/service/application.service';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {ApplicationEditComponent} from './application-edit/application-edit.component';
+import {AlertService} from '../../common/alert/alert.service';
+import {PermissionManageComponent} from './permission-manage/permission-manage.component';
 
 @Component({
   selector: 'app-application',
@@ -10,17 +12,27 @@ import {ApplicationEditComponent} from './application-edit/application-edit.comp
 export class ApplicationComponent implements OnInit {
 
   public modalRef: BsModalRef;
+  public applications = [];
 
-  alertsDismiss: any = [];
 
-  constructor(public applicationService: ApplicationService, public modalService: BsModalService) { }
+  constructor(public applicationService: ApplicationService,
+              public modalService: BsModalService) { }
 
   ngOnInit() {
-    this.applicationService.getAll().subscribe(response => {});
+    this.getApplication();
   }
 
-  openModal() {
-    this.modalRef = this.modalService.show(ApplicationEditComponent, {backdrop: 'static'});
+  getApplication() {
+    this.applicationService.getAll().subscribe(response => {
+      this.applications = response;
+    });
+  }
+
+  openModal(application) {
+    this.modalRef = this.modalService.show(ApplicationEditComponent, {
+      backdrop: 'static',
+      initialState: {application: application}
+    });
     this.modalService.onHidden.subscribe(r => {
       if (this.modalRef.content.isCancel) {
         console.log('取消了' + this.modalRef.content.value);
@@ -30,11 +42,7 @@ export class ApplicationComponent implements OnInit {
     });
   }
 
-  add(): void {
-    this.alertsDismiss.push({
-      type: 'info',
-      msg: `This alert will be closed in 5 seconds (added: ${new Date().toLocaleTimeString()})`,
-      timeout: 5000
-    });
+  managePermission() {
+    this.modalService.show(PermissionManageComponent, {backdrop: 'static', class: 'modal-xl'});
   }
 }

@@ -7,95 +7,34 @@
           <i class="fa fa-align-justify"></i>应用列表
         </div>
         <div class="card-body">
-          <app-tree></app-tree>
+          <!--<app-tree></app-tree>-->
           <table class="table">
             <thead>
             <tr>
-              <th>Username</th>
-              <th>Date registered</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th>Operator</th>
+              <th>id</th>
+              <th>名称</th>
+              <th>密钥</th>
+              <th>url</th>
+              <th>描述</th>
+              <td>操作</td>
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>Samppa Nori</td>
-              <td>2012/01/01</td>
-              <td>Member</td>
+            <tr *ngFor="let application of applications">
+              <td>{{application.id}}</td>
+              <td>{{application.name}}</td>
+              <td>{{application.secret}}</td>
+              <td>{{application.url}}</td>
+              <td>{{application.description}}</td>
               <td>
-                <span class="badge badge-success">Active</span>
+                <button class="btn btn-warning btn-sm" (click)="openModal(application)">编辑</button>
+                <button class="btn btn-success btn-sm" (click)="managePermission()">权限</button>
               </td>
-              <td><button class="btn btn-warning btn-sm" (click)="openModal()">编辑</button></td>
             </tr>
-            <tr>
-              <td>Estavan Lykos</td>
-              <td>2012/02/01</td>
-              <td>Staff</td>
-              <td>
-                <span class="badge badge-danger">Banned</span>
-              </td>
-              <td><button class="btn btn-warning btn-sm" (click)="openModal()">编辑</button></td>
-            </tr>
-            <tr>
-              <td>Chetan Mohamed</td>
-              <td>2012/02/01</td>
-              <td>Admin</td>
-              <td>
-                <span class="badge badge-secondary">Inactive</span>
-              </td>
-              <td><button class="btn btn-warning btn-sm" (click)="openModal()">编辑</button></td>
-            </tr>
-            <tr>
-              <td>Derick Maximinus</td>
-              <td>2012/03/01</td>
-              <td>Member</td>
-              <td>
-                <span class="badge badge-warning">Pending</span>
-              </td>
-              <td><button class="btn btn-warning btn-sm" (click)="openModal()">编辑</button></td>
-            </tr>
-            <tr>
-              <td>Friderik Dávid</td>
-              <td>2012/01/21</td>
-              <td>Staff</td>
-              <td>
-                <span class="badge badge-success">Active</span>
-              </td>
-              <td><button class="btn btn-warning btn-sm" (click)="openModal()">编辑</button></td>
-            </tr>
-
             </tbody>
           </table>
-          <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-            <li class="page-item active">
-              <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-          </ul>
         </div>
       </div>
     </div><!--/.col-->
-  </div>
-</div>
-
-<div class="card">
-  <div class="card-header">
-    <strong>Alerts</strong> <small>dismiss on timeout</small>
-  </div>
-  <div class="card-body">
-    <alert type="success" dismissOnTimeout="5000">
-      <strong>Well done!</strong> You successfully read this important alert message.
-    </alert>
-
-    <p>If you missed alert on top of me, just press <code>Add more</code> button</p>
-    <div *ngFor="let alert of alertsDismiss">
-      <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
-    </div>
-    <button type="button" class="btn btn-primary" (click)="add()">Add more</button>
   </div>
 </div>

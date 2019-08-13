@@ -1,0 +1,32 @@
+<div class="row" style="height: 800px">
+  <div class="col-sm-12 col-md-12 col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <i class="fa fa-lock"></i>应用API权限管理
+        <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
+      </div>
+      <div class="card-body">
+        <div class="row">
+
+          <div class="col-sm-6 col-md-6 col-lg-6" style="max-height: 700px; overflow-y: scroll">
+            <div class="card">
+              <div class="card-header">权限树</div>
+              <div class="card-body">
+                <app-ztree [zNodes]="znodes" [setting]="zsetting" (onInitialized)="onInitialized()" #permTree></app-ztree>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 col-lg-6" style="max-height: 700px">
+            <div class="card">
+              <div class="card-header">权限表达式</div>
+              <div class="card-body">
+                <textarea [(ngModel)]="expStr" rows="20" style="width:100%;"></textarea>
+                <!--<input type="text" [(ngModel)]="expStr"/>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

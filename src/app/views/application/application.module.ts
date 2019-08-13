@@ -7,24 +7,29 @@ import { ApplicationEditComponent } from './application-edit/application-edit.co
 import {AlertModule, ModalModule} from 'ngx-bootstrap';
 import {BaseModule} from '../base/base.module';
 import {MyCommonModule} from '../../common/my-common.module';
+import {AlertService} from '../../common/alert/alert.service';
+import { PermissionManageComponent } from './permission-manage/permission-manage.component';
+import {ApiService} from '../../common/service/api.service';
+import {FormsModule} from '@angular/forms';
 
 
 
 @NgModule({
-  declarations: [ApplicationComponent, ApplicationEditComponent],
+  declarations: [ApplicationComponent, ApplicationEditComponent, PermissionManageComponent],
   imports: [
     CommonModule,
     ApplicationRoutingModule,
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     BaseModule,
-    MyCommonModule
+    MyCommonModule,
+    FormsModule
   ],
   providers: [
-    ApplicationService
+    ApplicationService, ApiService
   ],
   entryComponents: [
-    ApplicationEditComponent
+    ApplicationEditComponent, PermissionManageComponent
   ]
 })
 export class ApplicationModule { }

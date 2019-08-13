@@ -45,6 +45,7 @@ import {HttpInterceptorService} from './common/interceptor/http-interceptor.serv
 import {ModalModule} from 'ngx-bootstrap';
 import { AlertComponent } from './common/alert/alert.component';
 import {MyCommonModule} from './common/my-common.module';
+import {AlertService} from './common/alert/alert.service';
 
 @NgModule({
   imports: [
@@ -75,6 +76,7 @@ import {MyCommonModule} from './common/my-common.module';
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true},
+    AlertService
   ],
   bootstrap: [ AppComponent ]
 })
