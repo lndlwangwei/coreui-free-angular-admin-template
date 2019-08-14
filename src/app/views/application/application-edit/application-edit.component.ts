@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
 import {ApplicationService} from '../../../common/service/application.service';
+import {AlertService} from '../../../common/alert/alert.service';
 
 @Component({
   selector: 'app-application-edit',
@@ -9,18 +10,20 @@ import {ApplicationService} from '../../../common/service/application.service';
 export class ApplicationEditComponent implements OnInit {
 
   public application: any;
+  public isConfirmed = false;
 
   constructor(public modalRef: BsModalRef,
+              public alertService: AlertService,
               public applicationService: ApplicationService) { }
 
   ngOnInit() {
   }
 
-  public add(application) {
-    this.applicationService.add(application)
-  }
-
-  public update(application) {
-
+  public save() {
+    this.applicationService.save(this.application).subscribe(response => {
+      this.alertService.alertInfo('保存成功');
+      this.isConfirmed = true;
+      this.modalRef.hide();
+    });
   }
 }

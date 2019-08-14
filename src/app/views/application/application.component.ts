@@ -11,15 +11,23 @@ import {PermissionManageComponent} from './permission-manage/permission-manage.c
 })
 export class ApplicationComponent implements OnInit {
 
-  public modalRef: BsModalRef;
+  public appModalRef: BsModalRef;
+  public permissionModalRef: BsModalRef;
   public applications = [];
 
 
   constructor(public applicationService: ApplicationService,
-              public modalService: BsModalService) { }
+              public modalService: BsModalService,
+              public alertService: AlertService) { }
 
   ngOnInit() {
     this.getApplication();
+    this.modalService.onHidden.subscribe(r => {
+      if (this.appModalRef.content.isConfirmed) {
+        // todo
+        this.getApplication();
+      }
+    });
   }
 
   getApplication() {
@@ -28,21 +36,31 @@ export class ApplicationComponent implements OnInit {
     });
   }
 
-  openModal(application) {
-    this.modalRef = this.modalService.show(ApplicationEditComponent, {
+  openEditModal(application?) {
+    this.appModalRef = this.modalService.show(ApplicationEditComponent, {
       backdrop: 'static',
-      initialState: {application: application}
+      initialState: {application: application || {}}
     });
+
     this.modalService.onHidden.subscribe(r => {
-      if (this.modalRef.content.isCancel) {
-        console.log('取消了' + this.modalRef.content.value);
-      } else {
-        console.log('确定了' + this.modalRef.content.value);
+      if (this.appModalRef.content.isConfirmed) {
+        // todo
+        this.getApplication();
       }
     });
   }
 
-  managePermission() {
-    this.modalService.show(PermissionManageComponent, {backdrop: 'static', class: 'modal-xl'});
+  openManagePermissionWindow(application) {
+    this.permissionModalRef = this.modalService.show(PermissionManageComponent, {
+      backdrop: 'static', class: 'modal-xl',
+      initialState: {application: application}
+    });
+  }
+
+  delete(appId) {
+    this.applicationService.delete(appId).subscribe(response => {
+      this.alertService.alertInfo('删除成功');
+      this.getApplication();
+    });
   }
 }

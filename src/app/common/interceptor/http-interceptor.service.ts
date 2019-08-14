@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import {
-    HttpEvent,
-    HttpHandler,
-    HttpInterceptor,
-    HttpRequest} from '@angular/common/http';
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest
+} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {AlertService} from '../alert/alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +17,7 @@ export class HttpInterceptorService implements HttpInterceptor {
 
     private consolrUrl = 'http://localhost:8093/';
 
-    constructor() { }
+    constructor(public alertService: AlertService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -24,7 +28,11 @@ export class HttpInterceptorService implements HttpInterceptor {
             });
         }
 
-        return next.handle(req);
+        return next.handle(req).pipe(tap(() => {}, err => {
+          if (err instanceof HttpErrorResponse) {
+            this.alertService.alertError(err.error.message);
+          }
+        }));
 
     }
 }

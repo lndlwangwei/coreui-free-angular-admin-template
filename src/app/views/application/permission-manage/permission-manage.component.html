@@ -16,7 +16,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-6 col-md-6 col-lg-6" style="max-height: 700px">
+          <div class="col-sm-6 col-md-6 col-lg-6">
             <div class="card">
               <div class="card-header">权限表达式</div>
               <div class="card-body">
@@ -26,6 +26,10 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-info pull-right" (click)="save()">保存</button>
+        <button class="btn btn-warning pull-right mr-2" (click)="modalRef.hide()">取消</button>
       </div>
     </div>
   </div>

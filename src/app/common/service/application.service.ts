@@ -15,15 +15,19 @@ export class ApplicationService {
     return this.http.get(this.baseUrl);
   }
 
-  public add(application: any): Observable<any> {
+  public save(application: any): Observable<any> {
     return this.http.post(this.baseUrl, application);
-  }
-
-  public update(application: any): Observable<any> {
-    return this.http.put(this.baseUrl, application);
   }
 
   public delete(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
+  }
+
+  public getAppPermission(appId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${appId}/permissions`);
+  }
+
+  public updateAppPermission(appId: string, permissionsStr: string[]): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${appId}/permissions`, permissionsStr);
   }
 }

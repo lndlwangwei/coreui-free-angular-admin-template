@@ -39,7 +39,7 @@ export class AppPermissionUtils {
   }
 
   // AntPathRequestMatch的简单实现，不支持/**/在中间的pattern
-  public antPathRequestMatch(pathPattern, methodArray, realPath, realMethod) {
+  public static antPathRequestMatch(pathPattern, methodArray, realPath, realMethod) {
     if (methodArray.indexOf('*') === -1 && methodArray.indexOf(realMethod) === -1) {
       return false;
     }
@@ -60,7 +60,7 @@ export class AppPermissionUtils {
   }
 
   // 将选中的api构造成权限表达式对象
-  private genExpObj(nodes) {
+  public static genExpObj(nodes) {
     // type=="PATH"才是真的的api节点
     nodes = nodes.filter(function (t) {
       return t.type === 'PATH';

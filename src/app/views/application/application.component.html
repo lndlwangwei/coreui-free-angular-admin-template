@@ -5,6 +5,7 @@
       <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i>应用列表
+          <button class="btn btn-success btn-sm pull-right" (click)="openEditModal()">添加</button>
         </div>
         <div class="card-body">
           <!--<app-tree></app-tree>-->
@@ -27,8 +28,9 @@
               <td>{{application.url}}</td>
               <td>{{application.description}}</td>
               <td>
-                <button class="btn btn-warning btn-sm" (click)="openModal(application)">编辑</button>
-                <button class="btn btn-success btn-sm" (click)="managePermission()">权限</button>
+                <button class="btn btn-warning btn-sm" (click)="openEditModal(application)">编辑</button>
+                <button class="btn btn-primary btn-sm" (click)="openManagePermissionWindow(application)">权限</button>
+                <button class="btn btn-danger btn-sm" (click)="delete(application.id)">删除</button>
               </td>
             </tr>
             </tbody>

@@ -1,9 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {ApiService} from '../../../common/service/api.service';
 import {ZtreeComponent} from '../../../common/ztree/ztree.component';
 import {$} from 'protractor';
 import {DEBUG} from '@angular/compiler-cli/ngcc/src/logging/console_logger';
+import {AppPermissionUtils} from '../../../common/utils/AppPermissionUtils';
+import {ApplicationService} from '../../../common/service/application.service';
+import {AlertService} from '../../../common/alert/alert.service';
 
 @Component({
   selector: 'app-permission-manage',
@@ -11,7 +14,12 @@ import {DEBUG} from '@angular/compiler-cli/ngcc/src/logging/console_logger';
 })
 export class PermissionManageComponent implements OnInit {
 
-  constructor(public modalRef: BsModalRef, public apiService: ApiService) { }
+  constructor(public modalRef: BsModalRef, public apiService: ApiService,
+            public applicationService: ApplicationService, public alertService: AlertService) { }
+
+  application: any;
+
+  public isConfirmed = false;
 
   znodes = [];
   expStr = '';
@@ -41,7 +49,7 @@ export class PermissionManageComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.apiService.getApiInfo('http://api.xkw.com/master/v1/documentation').subscribe(response => {
+    this.apiService.getApiInfo(`${this.application.url}/documentation`).subscribe(response => {
       console.log(response);
       response.forEach(node => {
         node.open = true;
@@ -50,40 +58,13 @@ export class PermissionManageComponent implements OnInit {
     });
   }
 
-  // 将选中的api构造成权限表达式对象
-  private genExpObj(nodes) {
-    // type=="PATH"才是真的的api节点
-    nodes = nodes.filter(function (t) {
-      return t.type === 'PATH';
-    });
-    const expObj = {};
-    nodes.forEach(node => {
-      if (!expObj.hasOwnProperty(node.path)) {
-        expObj[node.path] = [];
-      }
-      if (expObj[node.path].indexOf(node.method) === -1) {
-        expObj[node.path].push(node.method);
-      }
-    });
-
-    return expObj;
-  }
-
   private onCheckHandler(event, treeId, treeNode) {
     const ztree = this.permTree.ztree;
     const checkedNodes = ztree.getCheckedNodes(true);
-    const expObj = this.genExpObj(checkedNodes);
+    const expObj = AppPermissionUtils.genExpObj(checkedNodes);
     setTimeout(() => {
-      this.expStr = this.expObjToString(expObj);
+      this.expStr = AppPermissionUtils.expObjToString(expObj);
     });
-  }
-
-  private expObjToString(expObj) {
-    let expStr = '';
-    Object.keys(expObj).forEach(key => {
-      expStr += key + ':' + expObj[key].join(',') + '\n';
-    });
-    return expStr;
   }
 
   private checkNodesByExp(exp) {
@@ -94,7 +75,7 @@ export class PermissionManageComponent implements OnInit {
     this.treeId = ztree.treeId;
 
     ztree.checkAllNodes(false);
-    const expObj = typeof exp === 'object' ? exp : this.parseExpObj(exp);
+    const expObj = typeof exp === 'object' ? exp : AppPermissionUtils.parseExpObj(exp);
     if (!expObj) {
       return;
     }
@@ -104,65 +85,27 @@ export class PermissionManageComponent implements OnInit {
       return t.type === 'PATH';
     });
     for (const path in expObj) {
-      const pathNodes = allPathNodes.filter(t => this.antPathRequestMatch(path, expObj[path], t.path, t.method));
+      const pathNodes = allPathNodes.filter(t => AppPermissionUtils.antPathRequestMatch(path, expObj[path], t.path, t.method));
       pathNodes.forEach(node => {
         ztree.checkNode(node, true, true);
       });
     }
   }
 
-  // 将权限表示式解析成obj，比如：{"/courses":["GET","POST"],"/courses/{id}":["GET"]}
-  private parseExpObj(expStr) {
-    if (!expStr) {
-      return;
-    }
-
-    const expObj = {};
-    try {
-      const lines = expStr.trim().split(/[\r\n]+/);
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        const index = line.indexOf(':');
-        const path = line.substring(0, index);
-        if (!expObj.hasOwnProperty(lines[i].trim())) {
-          expObj[path] = [];
-        }
-
-        const methods = line.substring(index + 1).trim().toUpperCase().split(/[,\\s]+/);
-        for (let j = 0; j < methods.length; j++) {
-          if (expObj[path].indexOf(methods[j]) === -1) {
-            expObj[path].push(methods[j]);
-          }
-        }
-      }
-      return expObj;
-    } catch (err) {
-      return null;
-    }
-  }
-
-  // AntPathRequestMatch的简单实现，不支持/**/在中间的pattern
-  private antPathRequestMatch(pathPattern, methodArray, realPath, realMethod) {
-    if (methodArray.indexOf('*') === -1 && methodArray.indexOf(realMethod) === -1) {
-      return false;
-    }
-
-    if (pathPattern === '/**') {
-      return true;
-    }
-
-    // pathPattern.endWith("/**")
-    if (/\/\*\*$/.test(pathPattern)) {
-      const len = pathPattern.length;
-      if (realPath === pathPattern.substring(0, len - 3) || realPath.indexOf(pathPattern.substring(0, len - 2)) === 0) {
-        return true;
-      }
-    }
-
-    return pathPattern === realPath;
-  }
-
   public onInitialized() {
-    this.checkNodesByExp('/areas/**:*');
+    this.applicationService.getAppPermission(this.application.id).subscribe(response => {
+      if (response) {
+        this.expStr = response.map(p => p.permission).join('\n');
+        this.checkNodesByExp(this.expStr);
+      }
+    });
+  }
+
+  public save() {
+    this.applicationService.updateAppPermission(this.application.id, this.expStr.split('\n')).subscribe(response => {
+      this.alertService.alertInfo('保存成功！');
+      this.isConfirmed = true;
+      this.modalRef.hide();
+    });
   }
 }
