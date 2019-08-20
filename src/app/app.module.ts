@@ -46,6 +46,7 @@ import {ModalModule} from 'ngx-bootstrap';
 import { AlertComponent } from './common/alert/alert.component';
 import {MyCommonModule} from './common/my-common.module';
 import {AlertService} from './common/alert/alert.service';
+import { ApplicationComponent } from './views/application/application.component';
 
 @NgModule({
   imports: [
@@ -71,6 +72,7 @@ import {AlertService} from './common/alert/alert.service';
     P500Component,
     LoginComponent,
     RegisterComponent,
+    ApplicationComponent,
     // AlertComponent
   ],
   providers: [

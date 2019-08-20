@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import {ApplicationComponent} from './application.component';
+import {ApiGroupComponent} from './api-group.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ApplicationComponent,
+    component: ApiGroupComponent,
     data: {
-      title: 'application'
+      title: 'api-group'
     }
   }
 ];
@@ -17,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ApplicationRoutingModule {}
+export class ApiGroupRoutingModule {}

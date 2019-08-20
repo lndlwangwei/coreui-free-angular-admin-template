@@ -40,8 +40,8 @@ export const navItems: NavData[] = [
     }
   },
   {
-    name: '应用管理',
-    url: '/application',
+    name: 'api组管理',
+    url: '/api-group',
     icon: 'icon-speedometer'
   },
   {

@@ -15,7 +15,7 @@
             <div class="input-group-append">
               <span class="input-group-text">ID</span>
             </div>
-            <input type="text" [(ngModel)]="application.id" class="form-control" />
+            <input type="text" [(ngModel)]="apiGroup.id" class="form-control" />
           </div>
         </div>
       </div>
@@ -27,7 +27,7 @@
             <div class="input-group-append">
               <span class="input-group-text">名称</span>
             </div>
-            <input type="text" [(ngModel)]="application.name" class="form-control" />
+            <input type="text" [(ngModel)]="apiGroup.name" class="form-control" />
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
             <div class="input-group-append">
               <span class="input-group-text">密钥</span>
             </div>
-            <input type="text" [(ngModel)]="application.secret" class="form-control" />
+            <input type="text" [(ngModel)]="apiGroup.secret" class="form-control" />
           </div>
         </div>
       </div>
@@ -51,7 +51,19 @@
             <div class="input-group-append">
               <span class="input-group-text">url</span>
             </div>
-            <input type="text" [(ngModel)]="application.url" class="form-control" />
+            <input type="text" [(ngModel)]="apiGroup.url" class="form-control" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-append">
+              <span class="input-group-text">api前缀</span>
+            </div>
+            <input type="text" [(ngModel)]="apiGroup.apiPrefix" class="form-control" />
           </div>
         </div>
       </div>
@@ -63,7 +75,7 @@
             <div class="input-group-append">
               <span class="input-group-text">描述</span>
             </div>
-            <textarea class="form-control" [(ngModel)]="application.description" rows="5"></textarea>
+            <textarea class="form-control" [(ngModel)]="apiGroup.description" rows="5"></textarea>
           </div>
         </div>
       </div>

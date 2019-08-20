@@ -83,8 +83,8 @@ export const routes: Routes = [
         loadChildren: () => import('./views/widgets/widgets.module').then(m => m.WidgetsModule)
       },
       {
-        path: 'application',
-        loadChildren: () => import('./views/application/application.module').then(m => m.ApplicationModule)
+        path: 'api-group',
+        loadChildren: () => import('./views/api-group/api-group.module').then(m => m.ApiGroupModule)
       },
     ]
   },

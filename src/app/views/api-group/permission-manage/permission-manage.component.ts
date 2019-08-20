@@ -5,8 +5,8 @@ import {ZtreeComponent} from '../../../common/ztree/ztree.component';
 import {$} from 'protractor';
 import {DEBUG} from '@angular/compiler-cli/ngcc/src/logging/console_logger';
 import {AppPermissionUtils} from '../../../common/utils/AppPermissionUtils';
-import {ApplicationService} from '../../../common/service/application.service';
 import {AlertService} from '../../../common/alert/alert.service';
+import {ApiGroupService} from '../../../common/service/api-group.service';
 
 @Component({
   selector: 'app-permission-manage',
@@ -15,9 +15,9 @@ import {AlertService} from '../../../common/alert/alert.service';
 export class PermissionManageComponent implements OnInit {
 
   constructor(public modalRef: BsModalRef, public apiService: ApiService,
-            public applicationService: ApplicationService, public alertService: AlertService) { }
+            public apiGroupService: ApiGroupService, public alertService: AlertService) { }
 
-  application: any;
+  apiGroup: any;
 
   public isConfirmed = false;
 
@@ -49,7 +49,7 @@ export class PermissionManageComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.apiService.getApiInfo(`${this.application.url}/documentation`).subscribe(response => {
+    this.apiService.getApiInfo(`${this.apiGroup.url}/documentation`).subscribe(response => {
       console.log(response);
       response.forEach(node => {
         node.open = true;
@@ -93,7 +93,7 @@ export class PermissionManageComponent implements OnInit {
   }
 
   public onInitialized() {
-    this.applicationService.getAppPermission(this.application.id).subscribe(response => {
+    this.apiGroupService.getAppPermission(this.apiGroup.id).subscribe(response => {
       if (response) {
         this.expStr = response.map(p => p.permission).join('\n');
         this.checkNodesByExp(this.expStr);
@@ -102,7 +102,7 @@ export class PermissionManageComponent implements OnInit {
   }
 
   public save() {
-    this.applicationService.updateAppPermission(this.application.id, this.expStr.split('\n')).subscribe(response => {
+    this.apiGroupService.updateAppPermission(this.apiGroup.id, this.expStr.split('\n')).subscribe(response => {
       this.alertService.alertInfo('保存成功！');
       this.isConfirmed = true;
       this.modalRef.hide();
